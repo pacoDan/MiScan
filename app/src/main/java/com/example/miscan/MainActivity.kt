@@ -44,7 +44,6 @@ import com.example.miscan.ViewModels.BluetoothViewModel
 import com.example.miscan.models.ScannedDevice
 
 
-
 // Para que reconozca viewModel()
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -54,8 +53,6 @@ import androidx.compose.foundation.lazy.items
 // Para que no marque error la palabra "by" en los estados (remember y collectAsState)
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-
-
 
 
 class MainActivity : ComponentActivity() {
@@ -122,7 +119,7 @@ fun AppWithPermissions() {
 }
 
 @Composable
-fun BluetoothScannerScreen(viewModel: BluetoothViewModel = viewModel()) {
+fun BluetoothScannerScreen(viewModel: BluetoothViewModel = viewModel<BluetoothViewModel>()) {
     val devices by viewModel.devicesList.collectAsState()
     val isScanning by viewModel.isScanning.collectAsState()
 
@@ -164,7 +161,7 @@ fun PanicButtonSection(
             onClick = onScanClick,
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (isScanning) Color(0xFFD32F2F) else Color(0xFF1976D2)
+                containerColor = if (isScanning) Color(0xFFD32F2FL) else Color(0xFF1976D2)
             ),
             modifier = Modifier
                 .size(150.dp) // Botón grande y redondo
@@ -200,7 +197,7 @@ fun DeviceListSection(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(4.dp) // Listado compacto
         ) {
-            items(devices, key = { it.address }) { device ->
+            items(items = devices, key = { it.address }) { device ->
                 CompactDeviceItem(device)
             }
         }
