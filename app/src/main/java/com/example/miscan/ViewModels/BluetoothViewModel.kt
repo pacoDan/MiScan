@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.miscan.models.ScannedDevice
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,12 +50,38 @@ class BluetoothViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun startScan() {
-        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled) return
-        if (_isScanning.value) return
+        Log.d("MiScan", "Intentando iniciar escaneo...")
+
+        if (bluetoothAdapter == null) {
+            Log.e("MiScan", "Error: El dispositivo no soporta Bluetooth.")
+            return
+        }
+
+        if (!bluetoothAdapter.isEnabled) {
+            Log.e("MiScan", "Error: El Bluetooth está apagado.")
+            return
+        }
+
+        val scanner = bluetoothAdapter.bluetoothLeScanner
+        if (scanner == null) {
+            Log.e("MiScan", "Error: bluetoothLeScanner es null (Faltan permisos o BT apagado).")
+            return
+        }
+
+        if (_isScanning.value) {
+            Log.d("MiScan", "Ya está escaneando, ignorando petición.")
+            return
+        }
 
         _scannedDevices.value = emptyMap() // Limpiar lista anterior
-        bleScanner?.startScan(scanCallback)
-        _isScanning.value = true
+
+        try {
+            scanner.startScan(scanCallback)
+            _isScanning.value = true
+            Log.d("MiScan", "Escaneo iniciado exitosamente.")
+        } catch (e: SecurityException) {
+            Log.e("MiScan", "Error de permisos al iniciar escaneo: ${e.message}")
+        }
     }
 
     fun stopScan() {
