@@ -1,16 +1,16 @@
-plugins {
+    plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "com.example.miscan"
+    namespace = "com.rextrem.miscan"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.miscan"
+        applicationId = "com.rextrem.miscan"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

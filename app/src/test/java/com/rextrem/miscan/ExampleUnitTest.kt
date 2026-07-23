@@ -1,4 +1,4 @@
-package com.example.miscan
+package com.rextrem.miscan
 
 import org.junit.Test
 

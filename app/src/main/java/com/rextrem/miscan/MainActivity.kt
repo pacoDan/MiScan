@@ -1,4 +1,4 @@
-package com.example.miscan
+package com.rextrem.miscan
 
 import android.Manifest
 import android.os.Build
